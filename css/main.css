@@ -1,0 +1,73 @@
+html, body {
+  margin: 0;
+  padding: 0;
+  font-family: "proxima nova";
+  background: #ccc;
+  color: #fff;
+  text-rendering: optimizeLegibility;
+  height: 100%;
+}
+
+header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  padding: 20px;
+  z-index: 1003;
+}
+
+nav {
+  padding: 15px 0;
+}
+
+.main {
+  width: 800px;
+  height: 100%;
+  margin: auto;
+}
+
+.timeline {
+  display: inline-block;
+  position: relative;
+  float: left;
+  height: 100%;
+  width: 20px;
+  border-left: 2px solid #fff;
+}
+.timeline span {
+  position: absolute;
+  left: -44px;
+  text-align: right;
+}
+.timeline span:nth-child(1){
+  top: 5%;
+}
+.timeline span:nth-child(2){
+  top: 50%;
+}
+.timeline span:nth-child(3){
+  top: 90%;
+}
+
+
+.resize-container {
+  float: left;
+  width: 200px;
+  height: 100%;
+  background: #ddd;
+}
+
+.resize-drag {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  float: left;
+  width: 200px;
+  height: 260px;
+  background: #555;
+
+  /* This makes things *much* easier */
+  box-sizing: border-box;
+}
+
+
