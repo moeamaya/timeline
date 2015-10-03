@@ -21,6 +21,20 @@ var Helpers = {
   // returns a random time value in milliseconds
   randomTime: function(min, max){
     return ( Math.random() * (max - min) + min ) * 1000;
+  },
+
+  // get previous sibling and add a class
+  addPrevClass: function(e, className) {
+    var $target = $(e.target);
+    var $prevSibling = $target.prev();
+    if ($prevSibling) {
+      $prevSibling.addClass(className);
+    }
+
+    $target.bind('mouseout', function(){
+      $prevSibling.removeClass('prev');
+    });
   }
+
 
 };

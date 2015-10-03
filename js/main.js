@@ -1,102 +1,99 @@
-$(function(){
+'use strict';
 
-  var WEEK = 90; // 90px = 1 week
-  var PRICE = 3500; // $3500 = 1 week
+var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
 
-  var $schedule = $('.schedule');
-  var $price = $('.price');
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
 
-  // Resizeable div
-  interact('.resize-drag')
-  .draggable({
-    // enable inertial throwing
-    inertia: true,
-    // keep the element within the area of it's parent
-    restrict: {
-      restriction: "parent",
-      endOnly: true,
-      elementRect: { top: 0, left: 0, bottom: 1, right: 1 }
-    },
+var Dot = (function () {
+  function Dot() {
+    _classCallCheck(this, Dot);
 
-    // call this function on every dragmove event
-    onmove: dragMoveListener,
-    // call this function on every dragend event
-    onend: function (event) {
-      var textEl = event.target.querySelector('p');
+    this.$items = $('<div class="items">');
+    this.$circle = $('<div class="circle">');
+    this.$domObj = $('<div class="dot">').append(this.$circle).append(this.$items);
+  }
 
-      textEl && (textEl.textContent =
-        'moved a distance of '
-        + (Math.sqrt(event.dx * event.dx +
-                     event.dy * event.dy)|0) + 'px');
+  _createClass(Dot, [{
+    key: 'create',
+    value: function create() {
+      var _this = this;
+
+      $('.timeline').append(this.$domObj);
+
+      this.$circle.bind('click', function () {
+        var item = new Item();
+        item.create(_this.$items);
+      });
     }
-  })
-  .resizable({
-    edges: { bottom: true, top: true },
-    onend: function(event) {
-      var height = event.target.clientHeight;
-      
-      calcSchedule(height);
+  }]);
+
+  return Dot;
+})();
+'use strict';
+
+var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
+
+var Item = (function () {
+  function Item() {
+    _classCallCheck(this, Item);
+
+    this.$domObj = $('<input class="item" type="text" placeholder="Type task...">');
+  }
+
+  _createClass(Item, [{
+    key: 'create',
+    value: function create(dot) {
+      dot.append(this.$domObj);
     }
-  })
-  .on('resizemove', function (event) {
-    var target = event.target,
-        x = (parseFloat(target.getAttribute('data-x')) || 0),
-        y = (parseFloat(target.getAttribute('data-y')) || 0);
+  }]);
 
-    // update the element's style
-    target.style.height = event.rect.height + 'px';
+  return Item;
+})();
+"use strict";
 
-    // translate when resizing from top or left edges
-    x += event.deltaRect.left;
-    y += event.deltaRect.top;
+var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
 
-    target.style.webkitTransform = target.style.transform =
-        'translate(' + x + 'px,' + y + 'px)';
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-    target.setAttribute('data-x', x);
-    target.setAttribute('data-y', y);
+var Timeline = (function () {
+  function Timeline() {
+    _classCallCheck(this, Timeline);
 
+    this.idMatrix = "hello";
+    this.bones = [];
+    this.boneMatrices = [];
+    //...
+  }
 
+  _createClass(Timeline, [{
+    key: "create",
+    value: function create() {
+      console.log("Timeline live!");
+
+      for (var i = 0; i < 10; i++) {
+        var dot = new Dot();
+        dot.create();
+      }
+    }
+  }]);
+
+  return Timeline;
+})();
+'use strict';
+
+$(function () {
+
+  var timeline = new Timeline();
+
+  timeline.create();
+
+  // ---------------------------
+  // Global Events
+  // ---------------------------
+
+  $('.timeline').on('mouseover', '.dot', function (e) {
+    Helpers.addPrevClass(e, 'prev');
   });
-
-
-
-
-  function dragMoveListener (event) {
-    var target = event.target,
-        // keep the dragged position in the data-x/data-y attributes
-        x = (parseFloat(target.getAttribute('data-x')) || 0) + event.dx,
-        y = (parseFloat(target.getAttribute('data-y')) || 0) + event.dy;
-
-    // translate the element
-    target.style.webkitTransform =
-    target.style.transform =
-      'translate(' + x + 'px, ' + y + 'px)';
-
-    // update the posiion attributes
-    target.setAttribute('data-x', x);
-    target.setAttribute('data-y', y);
-  };
-
-  // this is used later in the resizing demo
-  window.dragMoveListener = dragMoveListener;
-
-
-
-  function calcSchedule(height){
-    var weeks = height / WEEK;
-    var weeksRoundHalf = Math.round(weeks * 2) / 2;
-    $schedule.text(weeksRoundHalf);
-
-    calcPrice(weeksRoundHalf);
-  };
-
-  function calcPrice(weeks){
-    var price = weeks * PRICE;
-    $price.text(price);
-  };
-
-
 });
-
-
