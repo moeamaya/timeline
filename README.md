@@ -1,6 +1,6 @@
-## Timeline js app
+# Timeline js app
 
-## Javacript written in es2015(es6)
+### Install babel CLI
 `npm install --global babel`
 
 ### Compile and run babel during dev
