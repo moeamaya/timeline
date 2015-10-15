@@ -32,7 +32,7 @@ var Helpers = {
     }
 
     $target.bind('mouseout', function(){
-      $prevSibling.removeClass('prev');
+      $prevSibling.removeClass(className);
     });
   }
 
