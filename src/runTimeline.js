@@ -7,13 +7,20 @@ $(function(){
 
 
 
-
   // ---------------------------
   // Global Events
   // ---------------------------
 
-  $('.timeline').on('mouseover', '.dot', function(e) {
-    Helpers.addPrevClass(e, 'prev');
+  $('.timeline').on('mouseenter', '.dot', function(e) {
+    let $target = $(e.target);
+    let $obj = $target.hasClass("circle") ? $target.parent() : $target;
+    
+    Helpers.addPrevClass($obj, 'prev');
+  });
+
+  $('.js-days').on('change', (e) => {
+    var amount = $(e.target).val();
+    timeline.updateDays(amount);
   });
 
 

@@ -24,16 +24,31 @@ var Helpers = {
   },
 
   // get previous sibling and add a class
-  addPrevClass: function(e, className) {
-    var $target = $(e.target);
-    var $prevSibling = $target.prev();
+  addPrevClass: function($obj, className) {
+    var $prevSibling = $obj.prev();
     if ($prevSibling) {
       $prevSibling.addClass(className);
     }
 
-    $target.bind('mouseout', function(){
+    $obj.bind('mouseleave', function(){
       $prevSibling.removeClass(className);
     });
+  },
+
+  monthNames: [
+    "Jan", "Feb", "Mar",
+    "Apr", "May", "Jun", "Jul",
+    "Aug", "Sept", "Oct",
+    "Nov", "Dec"
+  ],
+
+  formatDay: function(day){
+    var month = this.monthNames[day.getMonth()];
+    return month + ' ' + day.getDate();
+  },
+
+  validateLink: function(value) {
+    return /^(?:(?:(?:https?|ftp):)?\/\/)(?:\S+(?::\S*)?@)?(?:(?!(?:10|127)(?:\.\d{1,3}){3})(?!(?:169\.254|192\.168)(?:\.\d{1,3}){2})(?!172\.(?:1[6-9]|2\d|3[0-1])(?:\.\d{1,3}){2})(?:[1-9]\d?|1\d\d|2[01]\d|22[0-3])(?:\.(?:1?\d{1,2}|2[0-4]\d|25[0-5])){2}(?:\.(?:[1-9]\d?|1\d\d|2[0-4]\d|25[0-4]))|(?:(?:[a-z\u00a1-\uffff0-9]-*)*[a-z\u00a1-\uffff0-9]+)(?:\.(?:[a-z\u00a1-\uffff0-9]-*)*[a-z\u00a1-\uffff0-9]+)*(?:\.(?:[a-z\u00a1-\uffff]{2,})).?)(?::\d{2,5})?(?:[/?#]\S*)?$/i.test( value );
   }
 
 
